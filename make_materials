@@ -1,0 +1,24 @@
+#make the final directory
+mkdir final
+#copy the input data directory and create the output directories
+cp -R input_data output_files exercises reveal.js files final
+
+#Make the PDF document of the PHY224 Python Review 
+make latexpdf
+cp _build/latex/PHY224.pdf final
+
+#Convert the Review slides into html slides
+ipython nbconvert PythonReviewSlides.ipynb --to slides
+sed -e 's/<\/body>/<script src="files\/custom.js"><\/script><\/body>/' PythonReviewSlides.slides.html > p.html
+mv p.html PythonReviewSlides.slides.html
+cp PythonReviewSlides.slides.html final
+
+#Convert the Examples to slides.
+ipython nbconvert PythonExamples.ipynb --to slides
+sed -e 's/<\/body>/<script src="files\/custom.js"><\/script><\/body>/' PythonExamples.slides.html > p.html
+mv p.html PythonExamples.slides.html
+cp PythonExamples.slides.html final
+
+#Convert the Exercise solutions to a PDF
+ipython nbconvert PythonExercises.ipynb --to=pdf
+cp PythonExercises.pdf final
